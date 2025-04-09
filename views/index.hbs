@@ -36,9 +36,8 @@
   <section class="w3-container" id="input"> 
     <h2>Input</h2>
     <!-- define the form and prevents its default action after it is submitted then call three functions-->
-<form  id="input_form" method="post" action="/happy" 
-
-        onsubmit="return confirm('Sure to Submit')"
+    <form  id="input_form" method="post" action="/happy" 
+        onsubmit="return submitForm()"
         onreset="return confirm('Sure to Submit')"
     />
 
@@ -48,9 +47,9 @@
           <input class="w3-input" type="text" id="nickname" name="nickname"><br>
 
           <label for="gender">Gender: </label><br>
-          <input class="w3-radio" type="radio" id="male" name="gender" value="male">
+          <input class="w3-radio" type="radio" id="male" name="gender" value="he">
           <label for="male">Male</label><br>
-          <input class="w3-radio w3-margin-bottom" type="radio" id="female" name="gender" value="female">
+          <input class="w3-radio w3-margin-bottom" type="radio" id="female" name="gender" value="she">
           <label for="female">Female</label>
         </div>
       
@@ -64,55 +63,77 @@
             document.write(`<option value="${i}"> ${i} </option>`);
           }
         </script>
-      </select> <br>
+      </select><br>
 
       <!-- to submit a form and formatted again using w3.css classess -->
       <!-- clicking on the submit button activates the onsubmit event handler attached to the form tag -->
       <div id="guests"> </div>
         <input class="w3-button w3-black w3-margin" type="submit" value="Submit">
-         <input class="w3-button w3-black w3-margin" type="reset" value="Submit">
+        <input class="w3-button w3-black w3-margin" type="reset" value="Submit">
       </div>
       </div>
+
+      <input type="hidden" name="guestsData" id="guestsData">
+      <!-- hidden field to temporarily store data and pass it to the server-->
       
     </form> 
   </section>
 
   <footer class="w3-container ">
-    <p> &copy; 2024 CS3 Teachers </p>
+    <p> &copy; 2025 Michio Tiglao</p>
   </footer>
 
   <script>
-    function generateGuestFields(){
-    const num = document.getElementById('number').value; // gets the numer of guests
-    const container = document.getElementById('guests');
-    container.innerHTML = 'Enter the name(s) of your invitees: <br>';
+    function generateGuestFields() {
+      const num = document.getElementById('number').value;
+      const container = document.getElementById('guests');
+      container.innerHTML = 'Enter the name(s) of your invitees: <br>';
 
-      for(let i=0; i<num; i++){
-        // steps to create the individual input field 
+      for (let i = 0; i < num; i++) {
         const input = document.createElement('input');
         input.type = 'text';
-        input.name = 'name' + (i+1); // creates the assigned name to the field
-        input.className = 'w3-input w3-half  ' // assign a css class
-        container.appendChild(input); // include it in the guests div
+        input.name = 'name' + (i + 1);
+        input.className = 'w3-input w3-half';
+        container.appendChild(input);
 
-        // steps to create the individual checkbox for Going? per guest 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.id = 'checkbox' + (i+1);  // creates the assigned id to the field
-        checkbox.name = 'checkbox' + (i+1);
-        // applies a css class and include it in the guests div
-        checkbox.className = 'w3-check w3-margin-left w3-margin-right w3-margin-bottom'
+        checkbox.id = 'checkbox' + (i + 1);
+        checkbox.name = 'checkbox' + (i + 1);
+        checkbox.className = 'w3-check w3-margin-left w3-margin-right w3-margin-bottom';
         container.appendChild(checkbox);
 
         const label = document.createElement('label');
         label.htmlFor = checkbox.id;
         label.textContent = "Going?";
         container.appendChild(label);
-        // applies a newline on the browser after each guests Name and Going? checkbox.
-        container.appendChild(document.createElement('br')); 
+
+        container.appendChild(document.createElement('br'));
       }
+    }
+
+    // function to get the user's input and put it in an array
+    function submitForm() {
+      const num = document.getElementById('number').value;
+      const guests = [];
+
+      for(let i = 0; i < num; i++){
+        const nameField = document.getElementsByName('name' + (i + 1))[0];
+        const checkbox = document.getElementById('checkbox' + (i + 1));
+
+        if(nameField && checkbox){
+          guests.push({
+            name: nameField.value,
+            going: checkbox.checked
+         });
+        }
+      }
+      // stores data in the hidden field
+       document.getElementById('guestsData').value = JSON.stringify(guests);
+
+      // confirm form submission
+      return confirm('Sure to Submit?');
     }
   </script>
 </body>
-
 </html>

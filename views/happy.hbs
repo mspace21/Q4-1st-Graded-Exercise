@@ -7,7 +7,7 @@
   <meta name="author" content="">
   <meta name="description" content=" ">
   <meta name="keywords" content="">
-  <title>Canseco - CS 3 </title>
+  <title>TIGLAO - CS3 Q4 1st Graded</title>
   <!-- using the w3.css framework to show how predefined css classes can be used inside an html document.  -->
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <!-- local css property definitions to further enhance the page -->
@@ -27,27 +27,26 @@
     <a href="#" class="w3-bar-item w3-button w3-mobile">Happy</a> 
   </div>
 
-
   <header class="w3-container" id="header" > 
-    <h1>Roy Canseco - III-K - Jan 2025</h1>
+    <h1>Michio Tiglao - 9-Sr - April 2025</h1>
     <h2> Birthday </h2>
   </header>
 
 <section class="w3-container" id="input"> 
     <h2>Output</h2>
     <p>Your nickname: {{nickname}}</p>
-    <ul>
-        {{#each songLines}}
-        <li>{{this}}</li>
-        {{/each}}
-    </ul>
+    <p>Number of invitees: {{numInvitees}}</p>
+    <div id="output"></div>
   </section>
-
   <footer class="w3-container ">
-    <p> &copy; 2024 CS3 Teachers </p>
+    <a href="/">Back to Home</a>
+    <p> &copy; 2025 Michio Tiglao</p>
   </footer>
-
-  
+  <script>
+    const guestData = {{{json guests}}}; // passes data into the page
+    const username = "{{nickname}}";
+    const gender = "{{gender}}";
+  </script>
+  <script defer src="script.js"></script>
 </body>
-
 </html>

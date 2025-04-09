@@ -2,6 +2,12 @@
 const express = require("express");
 const hbs = require("hbs");
 
+hbs.registerHelper('json', function(context) {
+  return JSON.stringify(context);
+});
+// registering a JSON helper
+// allows adding a JS array directly in the hbs (front end) file
+
 const bodyParser = require("body-parser");
 
 const path = require("path");
@@ -27,17 +33,24 @@ app.get("/", (req, res) => {
 
 app.post("/happy", (req, res) => {
   const nickname = req.body.nickname;
-  const invitees = Array.isArray(req.body.invitees) ? req.body.invitees.filter(name => name.trim() !== "") : [];
+  const numInvitees = req.body.number;
+  const guestsData = req.body.guestsData;
+  const gender = req.body.gender;
 
-  let songLines = [];
+  const guestList = JSON.parse(guestsData);
+  // tentative list of guests / invitees
 
-  invitees.forEach((name) => {
-    songLines.push(`${invitees}: Happy Birthday`)
-  });
+  const guests = [];
+  // only considers guests who are going
+  for(let i = 0; i < guestList.length; i++){
+    if(guestList[i].going === true){
+      guests.push(guestList[i].name);
+    }
+  }
 
-  songLines.push(`Test`);
+  console.log(guests);
 
-  res.render("happy", { nickname, songLines });
+  res.render("happy", { nickname, numInvitees, guests, gender });
 });
 
 //Makes the app listen to port 3000
